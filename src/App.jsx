@@ -1,9 +1,14 @@
 import React, { useEffect,useState } from "react";
 import Header from "./Components/Header";
+import TodoForm from "./Components/TodoForm";
+import TodoItem from "./Components/TodoItem";
 
 const App = () => {
+  
+  const [tasks,setTasks]=useState([]);
     const[theme,setTheme]=useState('light'); 
   const element=document.documentElement
+
   useEffect(()=>{
       if (theme === 'dark') {
     localStorage.setItem("theme", "dark");
@@ -15,10 +20,18 @@ const App = () => {
   }
     },[theme]
   )
+  useEffect(() => {
+  console.log("Tasks updated:", tasks);
+}, [tasks]);
+
   return (
-    <div className="w-[600px] max-lg:flex   max-lg:w-[500px] max-lg:m-18 max-md:w-[300px] max-md:mx-33 max-md:h-[300px] h-[600px] m-70 shadow-custom rounded-3xl dark:bg-gray-950 dark:text-white dark:shadow-black  " >
-   <Header theme={theme} setTheme={setTheme}/>
+   <section className="flex items-center justify-center dark:bg-black h-screen ">
+     <div className="w-[600px]  mt-8   max-lg:w-[500px] max-lg:m-18 max-md:w-[400px]  max-md:h-[400px] h-[600px]  shadow-custom rounded-3xl dark:bg-gray-950 dark:text-white dark:shadow-custom  " >
+   <Header theme={theme} setTheme={setTheme} />
+   <TodoForm tasks={tasks} setTasks={setTasks}/>
+   <TodoItem tasks={tasks} />
     </div>
+   </section>
   )
 };
 
