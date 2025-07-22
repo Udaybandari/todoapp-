@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 
 const TodoForm = ({tasks,setTasks}) => {
-  const [value,setValue]=useState("")
+  const [value,setValue]=useState("");
+  const[input,setInput]=useState("")
   const newtask={
     id:Date.now(),
     text:value,
     completed:false,
   } 
-  console.log(tasks)
-
+  console.log(tasks);
   return (
     <div className="flex relative  items-center  justify-center h-22  ">
       <div className="flex items-center justify-center p-4 gap-5  text-2xl">
@@ -18,8 +18,8 @@ const TodoForm = ({tasks,setTasks}) => {
         onChange={(e)=>setValue(e.target.value)}
         placeholder="Enter a task... "
         />
-        s
-           <button className="text-2xl font-semibold px-4 bg-blue-800 py-3 rounded-2xl text-white" onClick={()=>setTasks(...tasks,newtask)}>Add</button>
+        
+           <button className="text-2xl font-semibold px-4 bg-blue-800 py-3 rounded-2xl text-white" onClick={()=>{setTasks((prev)=>[...prev,newtask]),setValue("")}}>Add</button>
     </div>
          
     </div>
