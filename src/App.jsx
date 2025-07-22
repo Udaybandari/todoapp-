@@ -26,9 +26,9 @@ const App = () => {
 
   return (
    <section className="flex items-center justify-center dark:bg-black h-screen ">
-     <div className="w-[600px]  mt-8   max-lg:w-[500px] max-lg:m-18 max-md:w-[400px]  max-md:h-[400px] h-[600px]  shadow-custom rounded-3xl dark:bg-gray-950 dark:text-white dark:shadow-custom  " >
+     <div className="w-[600px]  mt-8   max-lg:w-[500px] max-lg:m-18 max-md:w-[500px]  max-md:h-[500px] h-[600px]  shadow-custom rounded-3xl dark:bg-gray-950 dark:text-white dark:shadow-custom   " >
    <Header theme={theme} setTheme={setTheme} />
-   <TodoForm tasks={tasks} setTasks={setTasks}/>
+   <TodoForm tasks={tasks} setTasks={setTasks} />
    <TodoItem tasks={tasks} setTasks={setTasks}/>
     </div>
    </section>
