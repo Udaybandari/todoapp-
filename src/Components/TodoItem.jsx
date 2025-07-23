@@ -48,6 +48,13 @@ const filteredTasks = tasks.filter(task => {
          value={editText}
          onChange={(e)=>setEditText(e.target.value)} 
          className="rounded-md w-40 font-semibold"
+         onKeyDown={(e)=>{
+           if(e.key=="Enter")
+           {
+            handlechange(editId)
+           }
+
+         }}
          autoFocus
          />
          <button onClick={()=>handlechange(editId)} className="w-12 cursor-pointer text-sm border-1 rounded-md bg-gradient-to-r from-blue-400 to-blue-800 text-white font-semibold ">save </button>
