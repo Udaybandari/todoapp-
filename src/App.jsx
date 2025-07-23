@@ -36,9 +36,9 @@ const [filter, setFilter] = useState("all");
    <TodoForm tasks={tasks} setTasks={setTasks} filter={filter} />
    <TodoItem tasks={tasks} setTasks={setTasks} filter={filter}/>
    <div className="flex  gap-12 justify-center items-center">
-  <button onClick={() => setFilter("all")} className={`text-[22px] w-22 font-semibold border-2 rounded-2xl cursor-pointer  ${filter=="all"?"bg-green-500 border-black":"bg-gray-100 duration-200"}`}><span>🔘</span>All</button>
-  <button onClick={() => setFilter("completed")} className={`text-[22px]  w-40 font-semibold border-2 rounded-2xl cursor-pointer  ${filter=="completed"?"bg-green-500 border-black text-white":"bg-white"}`}><span>✅</span>Completed</button>
-  <button onClick={() => setFilter("active")} className={`text-[22px] w-33 font-semibold border-2 rounded-2xl  cursor-pointer ${filter=="active"?"bg-blue-500 text-white border-black":"bg-gray-100"}`}><span>📌</span>Active</button>
+  <button onClick={() => setFilter("all")} className={`text-[22px] w-22 font-semibold border-2 rounded-2xl cursor-pointer  ${filter=="all"?"bg-green-500 border-black":"bg-gray-100 text-black duration-200"}`}><span>🔘</span>All</button>
+  <button onClick={() => setFilter("completed")} className={`text-[22px]  w-40 font-semibold border-2 rounded-2xl cursor-pointer  ${filter=="completed"?"bg-green-500 text-white border-black":"bg-white text-black"}`}><span>✅</span>Completed</button>
+  <button onClick={() => setFilter("active")} className={`text-[22px] w-33 font-semibold border-2 rounded-2xl  cursor-pointer ${filter=="active"?"bg-blue-500 text-white border-black":"bg-gray-100 text-black"}`}><span>📌</span>Active</button>
 </div>
     </div>
     
