@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const TodoForm = ({tasks,setTasks}) => {
   const [value,setValue]=useState("");
-  const[input,setInput]=useState("")
+
   const newtask={
     id:Date.now(),
     text:value,
