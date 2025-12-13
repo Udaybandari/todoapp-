@@ -1,14 +1,39 @@
 import React, { useState } from "react";
 
-const TodoForm = ({tasks,setTasks}) => {
+const TodoForm = ({setTasks}) => {
   const [value,setValue]=useState("");
 
-  const newtask={
-    id:Date.now(),
-    text:value,
-    completed:false,
-  } 
-  console.log(tasks);
+  // const newtask={
+  //   id:Date.now(),
+  //   text:value,
+  //   completed:false,
+  // } 
+  // console.log(tasks);
+    const addTodo = async () => {
+    if (!value.trim()) return;
+    console.log("hello")
+    try {
+      const res = await fetch("http://localhost:3001/todos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          task: value,
+          tags: ["react"],
+          completed: false,
+        }),
+      });
+
+      const newTodo = await res.json();
+
+      // Update UI after server success
+      setTasks((prev) => [...prev, newTodo]);
+      setValue("");
+    } catch (error) {
+      console.error("Failed to add todo", error);
+    }
+  };
   return (
     <div className="flex relative  items-center  justify-center h-22  ">
       <div className="flex items-center justify-center p-4 gap-5  text-2xl overflow-scroll">
@@ -25,7 +50,7 @@ const TodoForm = ({tasks,setTasks}) => {
         }}
         />
         
-           <button className=" absolute  right-[98.7px]  bg-blue-900  text-2xl max-md:text-[20px] max-md:p-2 font-semibold px-3 pl-5 mr-1 pr-4  py-4 bg-blue rounded-2xl text-white cursor-pointer" onClick={()=>{setTasks((prev)=>[...prev,newtask]),setValue("")}}>Add</button>
+           <button className=" absolute  right-[98.7px]  bg-blue-900  text-2xl max-md:text-[20px] max-md:p-2 font-semibold px-3 pl-5 mr-1 pr-4  py-4 bg-blue rounded-2xl text-white cursor-pointer" onClick={addTodo}>Add</button>
     </div>
          
     </div>

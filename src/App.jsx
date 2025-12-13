@@ -5,12 +5,28 @@ import TodoItem from "./Components/TodoItem";
 
 const App = () => {
   
-  const [tasks,setTasks]=useState(()=>{
-    const saved=localStorage.getItem("tasks");
-    return saved?JSON.parse(saved):[];
-  });
-  useEffect(() => { localStorage.setItem("tasks", JSON.stringify(tasks)) }, [tasks])
-    const[theme,setTheme]=useState('light'); 
+  // const [tasks,setTasks]=useState(()=>{
+  //   const saved=localStorage.getItem("tasks");
+  //   return saved?JSON.parse(saved):[];
+  // });
+  // useEffect(() => { localStorage.setItem("tasks", JSON.stringify(tasks)) }, [tasks])
+  const [tasks, setTasks] = useState([]);
+   const[theme,setTheme]=useState('light'); 
+   useEffect(() => {
+  const fetchTodos = async () => {
+    try {
+      const res = await fetch("http://localhost:3001/todos");
+      const data = await res.json();
+      console.log(data)
+      setTasks(data);
+    } catch (error) {
+      console.error("Failed to fetch todos", error);
+    }
+  };
+
+  fetchTodos();
+}, []);
+
   const element=document.documentElement
 
   useEffect(()=>{

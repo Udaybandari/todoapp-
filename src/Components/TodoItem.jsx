@@ -6,14 +6,13 @@ import { MdOutlineRadioButtonUnchecked } from "react-icons/md";
 import { useState } from "react";
 
 const TodoItem = ({tasks,setTasks,filter}) => {
+ 
   const [editId, setEditId] = useState(null);
 const [editText, setEditText] = useState("");
 
     const handletoggle=(id)=>{
     setTasks(prev=>
          prev.map((t)=>t.id===id?{...t,completed:!t.completed}:t)
-
-
     );
   
 } 
@@ -26,7 +25,7 @@ console.log(editText)
 const filteredTasks = tasks.filter(task => {
   if (filter === "completed") return task.completed;
   if (filter === "active") return !task.completed;
-  return true; // 'all'
+  return true; 
 });
 
   
@@ -59,7 +58,11 @@ const filteredTasks = tasks.filter(task => {
          />
          <button onClick={()=>handlechange(editId)} className="w-12 cursor-pointer text-sm border-1 rounded-md bg-gradient-to-r from-blue-400 to-blue-800 text-white font-semibold ">save </button>
         </>
-   ):(    <h1 className="text-4xl font-serif max-md:text-2xl  max-lg:text-2xl"> {task.text}</h1>)}
+   ):(    <div>
+           <h1 className="text-4xl font-serif max-md:text-2xl  max-lg:text-2xl"> {tasks.text}</h1>
+ 
+    </div>
+   )}
        <button  className='cursor-pointer absolute right-13  text-2xl top-4' onClick={()=>{setEditId(task.id),setEditText(task.text)}} >✏️</button>
        <button  onClick={()=>setTasks(prev => prev.filter(t => t.id !==task.id))}>
        <RxCross2 className="text-4xl  max-md:text-2xl  max-md:right-4 max-md:top-5 absolute right-0 top-3 text-red-500 font-bold  cursor-pointer "  />
