@@ -15,7 +15,7 @@ const App = () => {
    useEffect(() => {
   const fetchTodos = async () => {
     try {
-      const res = await fetch("http://localhost:3001/todos");
+      const res = await fetch("http://localhost:3000/todos");
       const data = await res.json();
       console.log(data)
       setTasks(data);

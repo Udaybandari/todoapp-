@@ -13,7 +13,7 @@ const TodoForm = ({setTasks}) => {
     if (!value.trim()) return;
     console.log("hello")
     try {
-      const res = await fetch("http://localhost:3001/todos", {
+      const res = await fetch("http://localhost:3000/todos", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

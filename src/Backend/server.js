@@ -86,7 +86,7 @@ const deletedTodo = todoarr.splice(todoid, 1);
     todo: deletedTodo[0]
   });
 })
-const PORT=process.env.PORT||3001
+const PORT=process.env.PORT||3000
 app.listen(PORT,()=>{
     console.log(`server running on localhost ${PORT}`)
 })

@@ -12,7 +12,7 @@ const TodoItem = ({tasks,setTasks,filter}) => {
 const [editText, setEditText] = useState("");
 
  const handletoggle = async (id, completed) => {
-  const res = await fetch(`http://localhost:3001/todos/${id}`, {
+  const res = await fetch(`http://localhost:3000/todos/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ completed: !completed }),
@@ -26,7 +26,7 @@ const [editText, setEditText] = useState("");
 };
 const handleDelete = async (id) => {
   try {
-    const res = await fetch(`http://localhost:3001/todos/${id}`, {
+    const res = await fetch(`http://localhost:3000/todos/${id}`, {
       method: "DELETE"
     });
     if (res.ok) {
@@ -40,7 +40,7 @@ const handleDelete = async (id) => {
 };
 
 const handlechange = async (id,editText) => {
-  const res = await fetch(`http://localhost:3001/todos/${id}`, {
+  const res = await fetch(`http://localhost:3000/todos/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ task: editText }),
