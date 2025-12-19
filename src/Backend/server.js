@@ -1,92 +1,97 @@
-const express=require("express");
-const app=express();
+require("./db"); // Connect to MongoDB
+const express = require("express");
 const cors = require("cors");
-const todoarr = [
-  {
-    id: 1,
-    task: "create all APIs",
-    tags: ["Nodejs", "javascript"],
-    completed: false
-  },
-  {
-    id: 2,
-    task: "create all2 APIs",
-    tags: ["Nodejs2"],
-    completed: false
-  },
-  {
-    id: 3,
-    task: "Plan Project1",
-    tags: ["javascript"],
-    completed: true
-  }
-];
+const Todo = require("./models/Todo");
 
-app.use(express.json()); // ✅ REQUIRED
+const app = express();
 
+app.use(express.json());
 app.use(cors());
 
-app.get("/",(req,res)=>{
-res.send("this is a tasktrek project");
-})
-app.get("/todos",(req,res)=>{
-res.json(todoarr)
-})
-app.get("/todos/:id",(req,res)=>{
-    const todo=todoarr.find((a)=>a.id==req.params.id)
-    res.json(todo);
-})
-app.post("/todos", (req, res) => {
-  const { task, tags } = req.body;
-
-  if (!task) return res.status(400).json({ message: "task required" });
-  if (!tags) return res.status(400).json({ message: "tags required" });
-
-  const newtodo = {
-    id: todoarr.length ? todoarr[todoarr.length - 1].id + 1 : 1,
-    task,
-    tags,
-    completed: false   
-  };
-
-  todoarr.push(newtodo);
-  res.status(201).json(newtodo);
+/* Root */
+app.get("/", (req, res) => {
+  res.send("🚀 TaskTrek backend running");
 });
 
+/* Get all todos */
+app.get("/todos", async (req, res) => {
+  try {
+    const todos = await Todo.find().sort({ createdAt: -1 });
+    res.json(todos);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
-app.put("/todos/:id", (req, res) => {
-  const id = req.params.id;
-  const { task, tags, completed } = req.body;
+/* Get todo by id */
+app.get("/todos/:id", async (req, res) => {
+  try {
+    const todo = await Todo.findById(req.params.id);
+    if (!todo) return res.status(404).json({ message: "Todo not found" });
+    res.json(todo);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
-  const index = todoarr.findIndex(t => t.id == id);
-  if (index === -1) {
-    return res.status(404).json({ message: "Todo not found!" });
+/* Create new todo */
+app.post("/todos", async (req, res) => {
+  const { task, tags = [] } = req.body;
+
+  if (!task || !task.trim()) {
+    return res.status(400).json({ message: "Task is required" });
   }
 
-  if (task) todoarr[index].task = task;
-  if (tags) todoarr[index].tags = tags;
-  if (typeof completed === "boolean") todoarr[index].completed = completed;
+  const newTodo = new Todo({
+    task,
+    tags,
+    completed: false,
+  });
 
-  res.json(todoarr[index]);
+  try {
+    const savedTodo = await newTodo.save();
+    res.status(201).json(savedTodo);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
-app.delete("/todos/:id",(req,res)=>{
-const id=req.params.id;
+/* Update todo */
+app.put("/todos/:id", async (req, res) => {
+  const { task, tags, completed } = req.body;
 
-const todoid=todoarr.findIndex((t)=>t.id==id);
-if(todoid==-1)
-{
-    return res.status(404).json({message:"Todo not found!"});
-}
+  try {
+    const todo = await Todo.findById(req.params.id);
+    if (!todo) return res.status(404).json({ message: "Todo not found" });
 
-const deletedTodo = todoarr.splice(todoid, 1);
+    if (task !== undefined) todo.task = task;
+    if (tags !== undefined) todo.tags = tags;
+    if (typeof completed === "boolean") todo.completed = completed;
 
-  res.json({
-    message: "Todo deleted successfully",
-    todo: deletedTodo[0]
-  });
-})
-const PORT=process.env.PORT||3000
-app.listen(PORT,()=>{
-    console.log(`server running on localhost ${PORT}`)
-})
+    const updatedTodo = await todo.save();
+    res.json(updatedTodo);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+/* Delete todo */
+app.delete("/todos/:id", async (req, res) => {
+  try {
+    const deletedTodo = await Todo.findByIdAndDelete(req.params.id);
+
+    if (!deletedTodo) return res.status(404).json({ message: "Todo not found" });
+
+    res.json({
+      message: "Todo deleted successfully",
+      todo: deletedTodo,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`✅ Server running on http://localhost:${PORT}`);
+});

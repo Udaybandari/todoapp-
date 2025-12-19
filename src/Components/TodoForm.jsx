@@ -1,23 +1,14 @@
 import React, { useState } from "react";
 
-const TodoForm = ({setTasks}) => {
-  const [value,setValue]=useState("");
+const TodoForm = ({ setTasks }) => {
+  const [value, setValue] = useState("");
 
-  // const newtask={
-  //   id:Date.now(),
-  //   text:value,
-  //   completed:false,
-  // } 
-  // console.log(tasks);
-    const addTodo = async () => {
+  const addTodo = async () => {
     if (!value.trim()) return;
-    console.log("hello")
     try {
       const res = await fetch("http://localhost:3000/todos", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           task: value,
           tags: ["react"],
@@ -25,36 +16,39 @@ const TodoForm = ({setTasks}) => {
         }),
       });
 
+      if (!res.ok) throw new Error("Failed to add todo");
+
       const newTodo = await res.json();
 
-      // Update UI after server success
-      setTasks((prev) => [...prev, newTodo]);
+      setTasks(prev => [newTodo, ...prev]);
       setValue("");
     } catch (error) {
-      console.error("Failed to add todo", error);
+      console.error(error);
     }
   };
+
   return (
-    <div className="flex relative  items-center  justify-center h-22  ">
-      <div className="flex items-center justify-center p-4 gap-5  text-2xl overflow-scroll">
-        <input className="border-1 relative ml-0  max-md:py-2 max-md:px-2 max-md:w-85 py-4 px-3 font-semibold font-sans w-99 rounded-2xl focus:outline-none "
-        type="text"
-        value={value} 
-        onChange={(e)=>setValue(e.target.value)}
-        placeholder="Enter a task... "
-        onKeyDown={(e)=>{
-          if(e.key=="enter")
-          {
-            setValue(e.target.value)
-          }
-        }}
+    <div className="flex relative items-center justify-center h-22">
+      <div className="flex items-center justify-center p-4 gap-5 text-2xl overflow-scroll w-full max-w-[600px]">
+        <input
+          className="border rounded px-3 py-2 w-full font-semibold font-sans focus:outline-none"
+          type="text"
+          value={value}
+          onChange={e => setValue(e.target.value)}
+          placeholder="Enter a task..."
+          onKeyDown={e => {
+            if (e.key === "Enter") addTodo();
+          }}
         />
-        
-           <button className=" absolute  right-[98.7px]  bg-blue-900  text-2xl max-md:text-[20px] max-md:p-2 font-semibold px-3 pl-5 mr-1 pr-4  py-4 bg-blue rounded-2xl text-white cursor-pointer" onClick={addTodo}>Add</button>
+        <button
+          onClick={addTodo}
+          className="bg-blue-900 text-white font-semibold rounded px-5 py-3 cursor-pointer"
+        >
+          Add
+        </button>
+      </div>
     </div>
-         
-    </div>
-  )
+  );
 };
 
 export default TodoForm;
